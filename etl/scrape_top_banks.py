@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 data_url = "https://en.wikipedia.org/wiki/List_of_largest_banks"
-banks_db = "Banks.db"
-table_name = "Largest_banks"
 table_df = pd.DataFrame(
     columns=[
         "Bank_name",
