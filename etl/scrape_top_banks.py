@@ -14,10 +14,6 @@ table_df = pd.DataFrame(
         "Forbes_India_Market_cap_(USD_Billion)",
     ]
 )
-html_page = requests.get(data_url).text
-html_data = BeautifulSoup(html_page, "html.parser")
-html_tables = html_data.find_all("tbody")
-html_rows = html_tables[2].find_all("tr")
 
 
 def log_progress(message):
@@ -65,5 +61,13 @@ def populate_table_df(html_rows, table_df):
     return table_df
 
 
-table_df = populate_table_df(html_rows, table_df)
+def extract(table_df):
+    html_page = requests.get(data_url).text
+    html_data = BeautifulSoup(html_page, "html.parser")
+    html_tables = html_data.find_all("tbody")
+    html_rows = html_tables[2].find_all("tr")
+    return populate_table_df(html_rows, table_df)
+
+
+table_df = extract(table_df)
 table_df.to_csv("output_data/largest_banks_data.csv")
