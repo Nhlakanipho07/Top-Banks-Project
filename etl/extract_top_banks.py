@@ -1,17 +1,8 @@
-import requests, sqlite3, pandas as pd
+import requests, pandas as pd
 from bs4 import BeautifulSoup
 from datetime import datetime
 
 data_url = "https://en.wikipedia.org/wiki/List_of_largest_banks"
-table_df = pd.DataFrame(
-    columns=[
-        "Bank_name",
-        "Global_Data_Rank",
-        "Global_Data_Market_cap_(USD_Billion)",
-        "Forbes_India_Rank",
-        "Forbes_India_Market_cap_(USD_Billion)",
-    ]
-)
 
 
 def log_progress(message):
@@ -65,7 +56,3 @@ def extract(table_df):
     html_tables = html_data.find_all("tbody")
     html_rows = html_tables[2].find_all("tr")
     return populate_table_df(html_rows, table_df)
-
-
-table_df = extract(table_df)
-table_df.to_csv("output_data/largest_banks_data.csv")
