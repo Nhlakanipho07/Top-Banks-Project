@@ -1,69 +1,49 @@
 import pandas as pd
 
 
-def fill_market_cap(
-    market_cap_dict, market_cap_key, eur_conversion, gbp_conversion, inr_conversion
-):
-    if "EUR" in market_cap_key:
-        market_cap_dict[market_cap_key] = eur_conversion
-    elif "GBP" in market_cap_key:
-        market_cap_dict[market_cap_key] = gbp_conversion
-    elif "INR" in market_cap_key:
-        market_cap_dict[market_cap_key] = inr_conversion
+def convert_usd(top_banks_df, df_column_name):
+    new_column_names = []
+    usd_column = top_banks_df[df_column_name]
 
+    currency_billion_list = [
+        "(GBP_Billion)",
+        "(EUR_Billion)",
+        "(INR_Billion)",
+    ]
 
-def perform_conversion(table_df, market_cap_dict, column_heading):
-    eur_conversion = None
-    gbp_conversion = None
-    inr_conversion = None
+    exchange_rates = {
+        "GBP": 0.8,
+        "EUR": 0.93,
+        "INR": 82.95,
+    }
 
-    for capital in table_df[column_heading]:
-        if capital.isdigit():
-            capital = float(capital)
-            eur_conversion = round(capital * 0.93, 2)
-            gbp_conversion = round(capital * 0.8, 2)
-            inr_conversion = round(capital * 82.95, 2)
-        else:
-            market_cap_dict[column_heading] = capital
+    for currency_billion in currency_billion_list:
+        new_column_names.append(
+            df_column_name.replace("(USD_Billion)", currency_billion)
+        )
 
-    for index, market_cap_key in enumerate(list(market_cap_dict.keys())):
-        if "Global" in column_heading:
-            if index % 2 != 0:
-                fill_market_cap(
-                    market_cap_dict,
-                    market_cap_key,
-                    eur_conversion,
-                    gbp_conversion,
-                    inr_conversion,
+    for new_column in new_column_names:
+        for currency, conversion_unit in exchange_rates.items():
+            if currency in new_column:
+                top_banks_df[new_column] = usd_column.apply(
+                    lambda market_cap: (
+                        round(float(market_cap) * conversion_unit)
+                        if market_cap.isdigit()
+                        else market_cap
+                    )
                 )
-        elif "Forbes" in column_heading:
-            if index % 2 == 0:
-                fill_market_cap(
-                    market_cap_dict,
-                    market_cap_key,
-                    eur_conversion,
-                    gbp_conversion,
-                    inr_conversion,
-                )
+            break
+        # print(top_banks_df[new_column])
+
+    return top_banks_df
 
 
-def populate_market_cap(table_df, market_cap_dict):
-    perform_conversion(
-        table_df, market_cap_dict, "Global_Data_Market_cap_(USD_Billion)"
-    )
-    perform_conversion(
-        table_df, market_cap_dict, "Forbes_India_Market_cap_(USD_Billion)"
-    )
+def transform(top_banks_df):
 
-    return market_cap_dict
+    for df_column_name in [
+        "Global_Data_Market_cap_(USD_Billion)",
+        "Forbes_India_Market_cap_(USD_Billion)",
+    ]:
+        top_banks_df = convert_usd(top_banks_df, df_column_name)
 
-
-def transform(table_df, market_cap_dict):
-    x = populate_market_cap(table_df, market_cap_dict)
-    print(x)
-
-
-#     table_df[list(market_cap_dict.keys())] = pd.DataFrame(
-#         populate_market_cap(table_df, market_cap_dict)
-#     )
-#     return table_df
+    return top_banks_df

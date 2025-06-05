@@ -27,7 +27,7 @@ def get_bank_names(html_rows):
     return bank_names
 
 
-def populate_table_df(html_rows, table_df):
+def populate_table_df(html_rows, top_banks_df):
     bank_names = get_bank_names(html_rows)
     row_index = 0
 
@@ -44,15 +44,15 @@ def populate_table_df(html_rows, table_df):
             }
 
             row_df = pd.DataFrame(row_dict, index=[0])
-            table_df = pd.concat([table_df, row_df], ignore_index=True)
+            top_banks_df = pd.concat([top_banks_df, row_df], ignore_index=True)
             row_index += 1
 
-    return table_df
+    return top_banks_df
 
 
-def extract(table_df):
+def extract(top_banks_df):
     html_page = requests.get(data_url).text
     html_data = BeautifulSoup(html_page, "html.parser")
     html_tables = html_data.find_all("tbody")
     html_rows = html_tables[2].find_all("tr")
-    return populate_table_df(html_rows, table_df)
+    return populate_table_df(html_rows, top_banks_df)

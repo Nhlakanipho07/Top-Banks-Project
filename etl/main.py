@@ -5,7 +5,7 @@ from etl.transform_table_df import transform
 
 pd.set_option("display.max_columns", None)
 
-table_df = pd.DataFrame(
+top_banks_df = pd.DataFrame(
     columns=[
         "Bank_name",
         "Global_Data_Rank",
@@ -15,18 +15,8 @@ table_df = pd.DataFrame(
     ]
 )
 
-global_data_heading = "Global_Data_Market_cap_"
-forbes_india_heading = "Forbes_India_Market_cap_"
-market_cap_dict = {
-    global_data_heading + "(GBP Billion)": [],
-    forbes_india_heading + "(GBP Bilion)": [],
-    global_data_heading + "(EUR Billion)": [],
-    forbes_india_heading + "(EUR Billion)": [],
-    global_data_heading + "(INR Billion)": [],
-    forbes_india_heading + "(INR Billion)": [],
-}
 
-table_df = extract(table_df)
-table_df = transform(table_df, market_cap_dict)
+top_banks_df = extract(top_banks_df)
+top_banks_df = transform(top_banks_df)
 
-print(table_df)
+print(top_banks_df)
