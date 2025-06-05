@@ -2,38 +2,28 @@ import pandas as pd
 
 
 def convert_usd(top_banks_df, df_column_name):
-    new_column_names = []
-    usd_column = top_banks_df[df_column_name]
-
     currency_billion_list = [
         "(GBP_Billion)",
         "(EUR_Billion)",
         "(INR_Billion)",
     ]
-
+    new_column_names = [
+        df_column_name.replace("(USD_Billion)", currency_billion)
+        for currency_billion in currency_billion_list
+    ]
     exchange_rates = {
         "GBP": 0.8,
         "EUR": 0.93,
         "INR": 82.95,
     }
+    usd_column = pd.to_numeric(top_banks_df[df_column_name])
 
-    for currency_billion in currency_billion_list:
-        new_column_names.append(
-            df_column_name.replace("(USD_Billion)", currency_billion)
-        )
-
-    for new_column in new_column_names:
+    for name in new_column_names:
         for currency, conversion_unit in exchange_rates.items():
-            if currency in new_column:
-                top_banks_df[new_column] = usd_column.apply(
-                    lambda market_cap: (
-                        round(float(market_cap) * conversion_unit)
-                        if market_cap.isdigit()
-                        else market_cap
-                    )
+            if currency in name:
+                top_banks_df[name] = usd_column.apply(
+                    lambda market_cap: (round(market_cap * conversion_unit, 2))
                 )
-            break
-        # print(top_banks_df[new_column])
 
     return top_banks_df
 
