@@ -1,8 +1,12 @@
 import pandas as pd
+import sqlite3
 from etl.extract_top_banks import extract
-from etl.transform_table_df import transform
+from etl.transform_top_banks import transform
+from etl.load_top_banks import load_to_csv
 
 
+db_name = "Banks.db"
+table_name = "Largest_banks"
 pd.set_option("display.max_columns", None)
 
 top_banks_df = pd.DataFrame(
@@ -18,5 +22,9 @@ top_banks_df = pd.DataFrame(
 
 top_banks_df = extract(top_banks_df)
 top_banks_df = transform(top_banks_df)
+# load_to_csv(top_banks_df, "output_data/largest_banks_data.csv")
 
-print(top_banks_df)
+
+conn = sqlite3.connect(db_name)
+top_banks_df.to_sql(table_name, conn, if_exists="replace", index=False)
+conn.close()

@@ -1,14 +1,13 @@
-,Bank name,Global Data (as of 30 September 2024),Global Data (as of 30 September 2024),Global Data (as of 30 September 2024),Global Data (as of 30 September 2024),Global Data (as of 30 September 2024),Forbes India (as of 4 October 2024),Forbes India (as of 4 October 2024),Forbes India (as of 4 October 2024),Forbes India (as of 4 October 2024),Forbes India (as of 4 October 2024)
-,,Rank,Market_cap_(USD_Billion),Market_cap_(GBP_Billion),Market_cap_(EUR_Billion),Market_cap_(INR_Billion),Rank,Market_cap_(USD_Billion),Market_cap_(GBP_Billion),Market_cap_(EUR_Billion),Market_cap_(INR_Billion)
-0,JPMorgan Chase,1,599.931,479.94,557.94,49764.28,1,583.91,467.13,543.04,48435.33
-1,Bank of America,2,307.900,246.32,286.35,25540.31,2,304.56,243.65,283.24,25263.25
-2,Industrial and Commercial Bank of China,3,303.543,242.83,282.29,25178.89,3,288.06,230.45,267.9,23894.58
-3,Agricultural Bank of China,4,232.836,186.27,216.54,19313.75,4,231.00,184.8,214.83,19161.45
-4,Bank of China,5,209.295,167.44,194.64,17361.02,6,187.79,150.23,174.64,15577.18
-5,China Construction Bank,6,192.715,154.17,179.22,15985.71,5,197.15,157.72,183.35,16353.59
-6,Wells Fargo,7,192.279,153.82,178.82,15949.54,7,187.13,149.7,174.03,15522.43
-7,HSBC,8,163.544,130.84,152.1,13565.97,10,159.35,127.48,148.2,13218.08
-8,Commonwealth Bank,9,156.639,125.31,145.67,12993.21,,,,,
-9,Goldman Sachs,10,156.356,125.08,145.41,12969.73,,,,,
-10,Royal Bank of Canada,,,,,,8,173.86,139.09,161.69,14421.69
-11,Morgan Stanley,,,,,,9,169.17,135.34,157.33,14032.65
+,Bank_name,Global_Data_Rank,Global_Data_Market_cap_(USD_Billion),Forbes_India_Rank,Forbes_India_Market_cap_(USD_Billion),Global_Data_MC_GBP_Billion,Global_Data_MC_EUR_Billion,Global_Data_MC_INR_Billion,Forbes_India_MC_GBP_Billion,Forbes_India_MC_EUR_Billion,Forbes_India_MC_INR_Billion
+0,JPMorgan Chase,1,599.931,1,583.91,479.94,557.94,49764.28,467.13,543.04,48435.33
+1,Bank of America,2,307.900,2,304.56,246.32,286.35,25540.3,243.65,283.24,25263.25
+2,Industrial and Commercial Bank of China,3,303.543,3,288.06,242.83,282.29,25178.89,230.45,267.9,23894.58
+3,Agricultural Bank of China,4,232.836,4,231.00,186.27,216.54,19313.75,184.8,214.83,19161.45
+4,Bank of China,5,209.295,6,187.79,167.44,194.64,17361.02,150.23,174.64,15577.18
+5,China Construction Bank,6,192.715,5,197.15,154.17,179.22,15985.71,157.72,183.35,16353.59
+6,Wells Fargo,7,192.279,7,187.13,153.82,178.82,15949.54,149.7,174.03,15522.43
+7,HSBC,8,163.544,10,159.35,130.84,152.1,13565.97,127.48,148.2,13218.08
+8,Commonwealth Bank,9,156.639,,,125.31,145.67,12993.21,,,
+9,Goldman Sachs,10,156.356,,,125.08,145.41,12969.73,,,
+10,Royal Bank of Canada,,,8,173.86,,,,139.09,161.69,14421.69
+11,Morgan Stanley,,,9,169.17,,,,135.34,157.33,14032.65

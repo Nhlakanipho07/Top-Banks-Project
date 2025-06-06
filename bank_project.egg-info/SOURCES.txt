@@ -7,5 +7,9 @@ bank_project.egg-info/top_level.txt
 etl/__init__.py
 etl/banks_project.py
 etl/extract_top_banks.py
+etl/load_to_db_top_banks.py
+etl/load_top_banks.py
 etl/main.py
-etl/transform_table_df.py
+etl/transform_top_banks.py
+sqlite_connection_manager/__init__.py
+sqlite_connection_manager/sqlite_connection_manager.py

@@ -1,17 +1,4 @@
-import requests, pandas as pd
-from bs4 import BeautifulSoup
-from datetime import datetime
-
-data_url = "https://en.wikipedia.org/wiki/List_of_largest_banks"
-
-
-def log_progress(message):
-    time_format = "%Y-%h-%d-%H:%M:%S"
-    current_date = datetime.now()
-    time_stamp = current_date.strftime(time_format)
-
-    with open("code_log", "a") as log_file:
-        log_file.write(time_stamp + "," + message + "\n")
+import pandas as pd
 
 
 def get_bank_names(html_rows):
@@ -27,7 +14,7 @@ def get_bank_names(html_rows):
     return bank_names
 
 
-def populate_table_df(html_rows, top_banks_df):
+def populate_top_banks_df(html_rows, top_banks_df):
     bank_names = get_bank_names(html_rows)
     row_index = 0
 
@@ -47,12 +34,5 @@ def populate_table_df(html_rows, top_banks_df):
             top_banks_df = pd.concat([top_banks_df, row_df], ignore_index=True)
             row_index += 1
 
+    print(top_banks_df)
     return top_banks_df
-
-
-def extract(top_banks_df):
-    html_page = requests.get(data_url).text
-    html_data = BeautifulSoup(html_page, "html.parser")
-    html_tables = html_data.find_all("tbody")
-    html_rows = html_tables[2].find_all("tr")
-    return populate_table_df(html_rows, top_banks_df)
