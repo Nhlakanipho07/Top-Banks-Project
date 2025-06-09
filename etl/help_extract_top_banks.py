@@ -1,4 +1,5 @@
 import pandas as pd
+from etl.log_progress import log_progress
 
 
 def get_bank_names(html_rows):
@@ -35,4 +36,5 @@ def populate_top_banks_df(html_rows, top_banks_df):
             row_index += 1
 
     print(top_banks_df)
+    log_progress("Data extraction complete. Initiating Transformation process")
     return top_banks_df
