@@ -1,14 +1,14 @@
-import requests, pandas as pd
+import requests, pandas as pd, sqlite3
 from bs4 import BeautifulSoup
-from datetime import datetime
-from etl.extract_top_banks import populate_top_banks_df
-from etl.transform_top_banks import convert_usd
+from etl.help_extract_top_banks import populate_top_banks_df
+from etl.help_transform_top_banks import convert_usd
+from etl.log_progress import log_progress
 from sqlite_connection_manager.sqlite_connection_manager import SqliteConnectionManager
 
 
 data_url = "https://en.wikipedia.org/wiki/List_of_largest_banks"
 exchange_rates_path = "./data/exchange_rate.csv"
-
+table_name = "Largest_banks"
 top_banks_df = pd.DataFrame(
     columns=[
         "Bank_name",
@@ -23,15 +23,6 @@ top_banks_df = pd.DataFrame(
 def execute_using_sql_connection(operation, *args):
     with SqliteConnectionManager() as sql_connection:
         return operation(sql_connection, *args)
-
-
-def log_progress(message):
-    time_format = "%Y-%h-%d-%H:%M:%S"
-    current_date = datetime.now()
-    time_stamp = current_date.strftime(time_format)
-
-    with open("code_log", "a") as log_file:
-        log_file.write(f"""{time_stamp} : {message}\n""")
 
 
 def extract(data_url, top_banks_df):
@@ -62,23 +53,30 @@ def load_to_csv(transformed_df, output_path):
 
 
 def load_to_db(sql_connection, top_banks_df, table_name):
-    log_progress("SQL Connection initiated")
     top_banks_df.to_sql(table_name, sql_connection, if_exists="replace")
     log_progress("Data loaded to Database as a table, Executing queries")
 
 
-def run_query(query_statement, sql_connection):
-    """This function runs the query on the database table and
-    prints the output on the terminal. Function returns nothing."""
+def run_query(sql_connection, query_statement):
+    cursor = sql_connection.cursor()
 
+    cursor.execute(query_statement)
+    print(cursor.fetchall())
     log_progress("Process Complete")
-    sql_connection.close()
-    log_progress("Server Connection closed")
 
 
 top_banks_df = extract(data_url, top_banks_df)
-log_progress("Data extraction complete. Initiating Transformation process")
 top_banks_df = transform(top_banks_df, exchange_rates_path)
+
 load_to_csv(top_banks_df, "./output_data/largest_banks_data.csv")
-table_name = "Largest_banks"
+
+
 execute_using_sql_connection(load_to_db, top_banks_df, table_name)
+execute_using_sql_connection(run_query, "SELECT * FROM Largest_banks")
+execute_using_sql_connection(
+    run_query, "SELECT AVG(Global_Data_MC_GBP_Billion) FROM Largest_banks"
+)
+execute_using_sql_connection(
+    run_query, "SELECT AVG(Forbes_India_MC_GBP_Billion) FROM Largest_banks"
+)
+execute_using_sql_connection(run_query, "SELECT Bank_name FROM Largest_banks LIMIT 5")
