@@ -6,16 +6,14 @@ from etl.log_progress import log_progress
 from sqlite_connection_manager.sqlite_connection_manager import SqliteConnectionManager
 
 
-data_url = "https://en.wikipedia.org/wiki/List_of_largest_banks"
+data_url = "https://web.archive.org/web/20230908091635 /https://en.wikipedia.org/wiki/List_of_largest_banks"
 exchange_rates_path = "./data/exchange_rate.csv"
 table_name = "Largest_banks"
 top_banks_df = pd.DataFrame(
     columns=[
+        "Rank",
         "Bank_name",
-        "Global_Data_Rank",
-        "Global_Data_Market_cap_(USD_Billion)",
-        "Forbes_India_Rank",
-        "Forbes_India_Market_cap_(USD_Billion)",
+        "Market_cap_(USD_Billion)",
     ]
 )
 
@@ -29,18 +27,14 @@ def extract(data_url, top_banks_df):
     html_page = requests.get(data_url).text
     html_data = BeautifulSoup(html_page, "html.parser")
     html_tables = html_data.find_all("tbody")
-    html_rows = html_tables[2].find_all("tr")
+    html_rows = html_tables[0].find_all("tr")
     log_progress("Preliminaries complete. Initiating ETL process")
     return populate_top_banks_df(html_rows, top_banks_df)
 
 
 def transform(top_banks_df, csv_path):
 
-    for df_column_name in [
-        "Global_Data_Market_cap_(USD_Billion)",
-        "Forbes_India_Market_cap_(USD_Billion)",
-    ]:
-        top_banks_df = convert_usd(top_banks_df, df_column_name, csv_path)
+    top_banks_df = convert_usd(top_banks_df, "Market_cap_(USD_Billion)", csv_path)
 
     print(top_banks_df)
     log_progress("Data transformation complete. Initiating Loading process")
@@ -73,10 +67,5 @@ load_to_csv(top_banks_df, "./output_data/largest_banks_data.csv")
 
 execute_using_sql_connection(load_to_db, top_banks_df, table_name)
 execute_using_sql_connection(run_query, "SELECT * FROM Largest_banks")
-execute_using_sql_connection(
-    run_query, "SELECT AVG(Global_Data_MC_GBP_Billion) FROM Largest_banks"
-)
-execute_using_sql_connection(
-    run_query, "SELECT AVG(Forbes_India_MC_GBP_Billion) FROM Largest_banks"
-)
+execute_using_sql_connection(run_query, "SELECT AVG(MC_GBP_Billion) FROM Largest_banks")
 execute_using_sql_connection(run_query, "SELECT Bank_name FROM Largest_banks LIMIT 5")
