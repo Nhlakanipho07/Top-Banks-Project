@@ -4,7 +4,7 @@ from etl.log_progress import log_progress
 
 class SqliteConnectionManager:
     def __init__(self):
-        self.db_name = "./banks_database/Banks.db"
+        self.db_name = "../banks_database/Banks.db"
         self.sql_connection = None
 
     def __enter__(self):

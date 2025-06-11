@@ -3,6 +3,13 @@ from etl.log_progress import log_progress
 from bs4 import BeautifulSoup
 
 
+def get_html_rows(data_url):
+    html_page = requests.get(data_url).text
+    html_data = BeautifulSoup(html_page, "html.parser")
+    html_tables = html_data.find_all("tbody")
+    return html_tables[0].find_all("tr")
+
+
 def get_bank_names(html_rows):
     bank_names = []
 
@@ -27,24 +34,20 @@ def populate_top_banks_df(html_rows, top_banks_df):
 
         if cells:
             row_dict = {
-                "Rank": cells[0].contents[0][:-1],
+                "Rank": int(cells[0].contents[0][:-1]),
                 "Bank_name": bank_names[row_index],
-                "Market_cap_(USD_Billion)": cells[2].contents[0][:-1],
+                "Market_cap_(USD_Billion)": float(cells[2].contents[0][:-1]),
             }
 
             row_df = pd.DataFrame(row_dict, index=[0])
             top_banks_df = pd.concat([top_banks_df, row_df], ignore_index=True)
             row_index += 1
 
-    print(top_banks_df)
     log_progress("Data extraction complete. Initiating Transformation process")
     return top_banks_df
 
 
 def extract(data_url, top_banks_df):
-    html_page = requests.get(data_url).text
-    html_data = BeautifulSoup(html_page, "html.parser")
-    html_tables = html_data.find_all("tbody")
-    html_rows = html_tables[0].find_all("tr")
+    html_rows = get_html_rows(data_url)
     log_progress("Preliminaries complete. Initiating ETL process")
     return populate_top_banks_df(html_rows, top_banks_df)

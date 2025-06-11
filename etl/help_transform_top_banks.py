@@ -32,6 +32,5 @@ def convert_usd(top_banks_df, df_column_name, csv_path):
 
 def transform(top_banks_df, csv_path):
     top_banks_df = convert_usd(top_banks_df, "Market_cap_(USD_Billion)", csv_path)
-    print(top_banks_df)
     log_progress("Data transformation complete. Initiating Loading process")
     return top_banks_df
