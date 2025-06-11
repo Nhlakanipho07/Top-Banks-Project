@@ -1,4 +1,4 @@
 env/
 etl_example.py
-bank_project.egg-info/
+banks_project.egg-info/
 build/
