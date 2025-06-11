@@ -1,4 +1,4 @@
-from etl.log_progress import log_progress
+from logs.log_progress import log_progress
 
 
 def run_query(sql_connection, query_statement):

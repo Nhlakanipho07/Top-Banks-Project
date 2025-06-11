@@ -1,5 +1,5 @@
 import csv, numpy as np, pandas as pd
-from etl.log_progress import log_progress
+from logs.log_progress import log_progress
 
 
 def get_exchange_rates(csv_path):

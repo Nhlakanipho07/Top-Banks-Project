@@ -1,5 +1,5 @@
 import pandas as pd, requests
-from etl.log_progress import log_progress
+from logs.log_progress import log_progress
 from bs4 import BeautifulSoup
 
 

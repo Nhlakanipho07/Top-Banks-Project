@@ -1,9 +1,9 @@
 import pandas as pd
-from etl.log_progress import log_progress
+from logs.log_progress import log_progress
 
 
 def load_to_csv(transformed_df, output_path):
-    transformed_df.to_csv(output_path)
+    transformed_df.to_csv(output_path, index=False)
     log_progress("Data saved to CSV file")
 
 
