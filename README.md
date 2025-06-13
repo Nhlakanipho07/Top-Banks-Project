@@ -26,7 +26,9 @@
 
 - Run `pip install .` in the terminal.
 
-- To verify that `top_banks` is installed properly, run:
+- Then, run `pip -r requirements.txt` in the terminal.
+
+- To verify that `top_banks` and other requirements are installed properly, run:
 
   `pip freeze`
 
