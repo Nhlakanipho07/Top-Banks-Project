@@ -26,7 +26,7 @@
 
 - Run `pip install .` in the terminal.
 
-- Then, run `pip -r requirements.txt` in the terminal.
+- Then, run `pip install -r requirements.txt` in the terminal.
 
 - To verify that `top_banks` and other requirements are installed properly, run:
 
